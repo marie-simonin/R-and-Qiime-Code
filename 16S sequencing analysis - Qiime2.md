@@ -315,6 +315,7 @@ assign_taxonomy.py -i repr_set_seqs.fasta -r 99_otus_16S.fasta -t consensus_taxo
 
 ## Debug Deblur or Quality filtering
 ### To find extra space or missing quality scores in fastq files (in the terminal):
+### Problem if a 0 is not returned
 ```{r}
 for f in *.fastq; do r=$(( $(wc -l < $f | tr -d '[:space:]') % 4 )); echo $r $f; done
 ```
