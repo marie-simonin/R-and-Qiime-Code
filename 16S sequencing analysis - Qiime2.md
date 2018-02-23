@@ -1,13 +1,15 @@
-# 16S amplicon sequencing analysis with Qiime2 - Dada2 and Deblur 
+# 16S amplicon sequencing analysis with Qiime2 
+# Dada2 and Deblur 
 
 
-# Open Qiime2
+## Open Qiime2
 ```{r}
 source activate qiime2-2017.10
 qiime
 ```
 
-# Import demultiplexed fastq (sequences not joined) - files should be under this format (Casava): sampleID_S50_L001_R1_001.fastq.gz
+## Import demultiplexed fastq (sequences not joined)
+### Files should be under this format (Casava): sampleID_S50_L001_R1_001.fastq.gz
 ```{r}
 qiime tools import \
   --type 'SampleData[PairedEndSequencesWithQuality]' \
@@ -100,7 +102,7 @@ qiime feature-table merge-seq-data \
 ```
 
 
-######################################################################################################
+##############################################################################
 
 
 # Deblur - Sequences need to be paired first
@@ -189,7 +191,7 @@ macqiime
 biom convert -i feature-table.biom -o Deblur-SV-table.txt --to-tsv --table-type="OTU table"
 ```
 
-##To regroup different processed datasets - Merging denoised datasets (SV tables and representative sequences)
+## To regroup different processed datasets - Merging denoised datasets (SV tables and representative sequences)
 ```{r}
 qiime feature-table merge \
   --i-table1 demux-joined-filtered-table-deblur.qza \
@@ -226,7 +228,7 @@ qiime feature-table rarefy \
 ```
 
 
-# Export Merged dataset
+## Export Merged dataset
 ```{r}
 qiime tools export \
   Merged-joined-filtered-rep-seqs-deblur.qza \
@@ -267,7 +269,7 @@ single_rarefaction.py -i feature-table.biom -o Deblur-SVtable-rarefied-10000.bio
 
 # Taxonomy in Qiime2 or Qiime 1
 
-## In Qiime 2 - Assign Taxonomy: feature classifier (need SILVA or Greengene rep seq + taxonomy file + dataset rep seq.qza) - Need to be tested
+## In Qiime 2 - Assign Taxonomy: feature classifier (need SILVA or Greengene rep seq + taxonomy file + dataset rep seq.qza)
 ### Import reference files from Silva 128
 ```{r}
 qiime tools import \
