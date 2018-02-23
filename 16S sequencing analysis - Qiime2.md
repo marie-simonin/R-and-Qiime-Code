@@ -289,9 +289,9 @@ qiime tools import \
 ```{r}
 qiime feature-classifier extract-reads \
   --i-sequences 99_otus_16S.qza \
-  --p-f-primer GTGCCAGCMGCCGCGGTAA \
-  --p-r-primer GGACTACHVGGGTWTCTAAT \
-  --p-trunc-len 100 \
+  --p-f-primer GTGYCAGCMGCCGCGGTAA \
+  --p-r-primer GGACTACNVGGGTWTCTAAT \
+  --p-trunc-len 260 \
   --o-reads reference-seqs.qza
 ```
 
@@ -322,8 +322,9 @@ assign_taxonomy.py -i repr_set_seqs.fasta -r 99_otus_16S.fasta -t consensus_taxo
 
 
 ## Debug Deblur or Quality filtering
-### To find extra space or missing quality scores in fastq files:
+### To find extra space or missing quality scores in fastq files (in the terminal):
+```{r}
 for f in *.fastq; do r=$(( $(wc -l < $f | tr -d '[:space:]') % 4 )); echo $r $f; done
-
+```
 
 
