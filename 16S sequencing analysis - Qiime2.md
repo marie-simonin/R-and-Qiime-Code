@@ -25,7 +25,7 @@ qiime demux summarize \
 ## Visualize the qzv file on qiime tools view: https://view.qiime2.org/
 
 # Dada2 
-## If running on a server, start session in a screen (tmux) - (tmux detach or Detach by pushing ctrl b d)
+## If running on a server, start session in a screen (tmux) 
 ```{r}
 tmux new -s dada
 tmux att -t dada
@@ -119,13 +119,11 @@ gzip M*
 ```
 
 ## In Qiime 2: Import & Filter & Deblur
+
 ```{r}
-source activate qiime2-2017.10
 qiime
 ```
-
-
-## Import in Qiime 2
+## Import joined fastq files in Qiime 2
 ```{r}
 qiime tools import \
   --type 'SampleData[SequencesWithQuality]' \
@@ -185,13 +183,7 @@ qiime tools export \
   --output-dir Deblur-output
 ```
 
-## convert biom file in txt file in Qiime 1
-```{r}
-macqiime
-biom convert -i feature-table.biom -o Deblur-SV-table.txt --to-tsv --table-type="OTU table"
-```
-
-## To regroup different processed datasets - Merging denoised datasets (SV tables and representative sequences)
+## In Qiime 2: To regroup different processed datasets - Merging denoised datasets (SV tables and representative sequences)
 ```{r}
 qiime feature-table merge \
   --i-table1 demux-joined-filtered-table-deblur.qza \
@@ -245,11 +237,11 @@ qiime tools export \
   --output-dir Merged-deblur
 ```
 
-## convert biom file in txt file
+## convert biom file in txt file in Qiime 1
 ```{r}
-biom convert -i feature-table.biom -o Merged-deblur-SVtable-rarefied-10000.txt --to-tsv --table-type="OTU table"
+macqiime
+biom convert -i feature-table.biom -o Merged-Deblur-SV-table.txt --to-tsv --table-type="OTU table"
 ```
-
 
 # Misc in Qiime 1
 ## Subsample a Biom table in Qiime1 based on a list of sample ID
