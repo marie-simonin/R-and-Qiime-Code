@@ -101,9 +101,7 @@ qiime feature-table merge-seq-data \
   --o-merged-data merged_rep-seq-dada2.qza
 ```
 
-
-##############################################################################
-
+---
 
 # Deblur - Sequences need to be paired first
 
