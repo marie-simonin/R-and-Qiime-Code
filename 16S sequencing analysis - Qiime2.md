@@ -32,8 +32,17 @@ qiime vsearch join-pairs \
   --i-demultiplexed-seqs demux.qza \
   --o-joined-sequences demux-joined.qza
 ```
+## Visualization
+```{r}
+qiime demux summarize \
+  --i-data demux-joined.qza \
+  --o-visualization demux-joined.qzv 
+```   
+### Visualize the qzv file on qiime tools view: https://view.qiime2.org/
 
-## or In Qiime1
+
+
+## or Join reads In Qiime1
 ```{r}
 macqiime
 multiple_join_paired_ends.py -i Raw-data -o Sequences_PairedEndJoined
