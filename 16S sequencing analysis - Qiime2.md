@@ -41,41 +41,6 @@ qiime demux summarize \
 ### Visualize the qzv file on qiime tools view: https://view.qiime2.org/
 
 
-
-## or Join reads In Qiime1
-```{r}
-macqiime
-multiple_join_paired_ends.py -i Raw-data -o Sequences_PairedEndJoined
-```
-
-### (Ignore if the pairing was done in Qiime2) Rename the joined fastQ files in the Casava format (Ex: sampleID_S50_L001_R1_001.fastq) and then gunzip the files
-```{r}
-gzip M*
-```
-
-### (Ignore if the pairing was done in Qiime2) In Qiime 2: Import & Filter & Deblur (if the joining was done in Qiime1)
-
-```{r}
-qiime
-```
-### (Ignore if the pairing was done in Qiime2) Import joined fastq files in Qiime 2 
-```{r}
-qiime tools import \
-  --type 'SampleData[SequencesWithQuality]' \
-  --input-path Sequences_PairedEndJoined \
-  --source-format CasavaOneEightSingleLanePerSampleDirFmt \
-  --output-path demux-joined.qza 
-```
-```{r}
-qiime demux summarize \
-  --i-data demux-joined.qza \
-  --o-visualization demux-joined.qzv 
-```   
-### (Ignore if the pairing was done in Qiime2) Visualize the qzv file on qiime tools view: https://view.qiime2.org/
-
-
-
-
 ## Quality filtering
 ```{r}
 qiime quality-filter q-score \
@@ -297,6 +262,40 @@ make_phylogeny.py -i Merge_final_alignment.fasta -t fasttree -o Merge_final.tre
 ```{r}
 single_rarefaction.py -i feature-table.biom -o Deblur-SVtable-rarefied-10000.biom -d 10000
 ```
+##  Join paired-end reads In Qiime1
+```{r}
+macqiime
+multiple_join_paired_ends.py -i Raw-data -o Sequences_PairedEndJoined
+```
+
+### Rename the joined fastQ files in the Casava format (Ex: sampleID_S50_L001_R1_001.fastq) and then gunzip the files
+```{r}
+gzip M*
+```
+
+###  In Qiime 2: Import & Filter & Deblur (if the joining was done in Qiime1)
+
+```{r}
+qiime
+```
+###  Import joined fastq files in Qiime 2 
+```{r}
+qiime tools import \
+  --type 'SampleData[SequencesWithQuality]' \
+  --input-path Sequences_PairedEndJoined \
+  --source-format CasavaOneEightSingleLanePerSampleDirFmt \
+  --output-path demux-joined.qza 
+```
+```{r}
+qiime demux summarize \
+  --i-data demux-joined.qza \
+  --o-visualization demux-joined.qzv 
+```   
+###  Visualize the qzv file on qiime tools view: https://view.qiime2.org/
+
+
+
+
 
 
 # Taxonomy in Qiime2 or Qiime 1
