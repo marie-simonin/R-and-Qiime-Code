@@ -39,17 +39,17 @@ macqiime
 multiple_join_paired_ends.py -i Raw-data -o Sequences_PairedEndJoined
 ```
 
-## Rename the joined fastQ files in the Casava format (Ex: sampleID_S50_L001_R1_001.fastq) and then gunzip the files
+### (Ignore if the pairing was done in Qiime2) Rename the joined fastQ files in the Casava format (Ex: sampleID_S50_L001_R1_001.fastq) and then gunzip the files
 ```{r}
 gzip M*
 ```
 
-## In Qiime 2: Import & Filter & Deblur (if the joining was done in Qiime1)
+### (Ignore if the pairing was done in Qiime2) In Qiime 2: Import & Filter & Deblur (if the joining was done in Qiime1)
 
 ```{r}
 qiime
 ```
-## Import joined fastq files in Qiime 2 
+### (Ignore if the pairing was done in Qiime2) Import joined fastq files in Qiime 2 
 ```{r}
 qiime tools import \
   --type 'SampleData[SequencesWithQuality]' \
@@ -62,7 +62,10 @@ qiime demux summarize \
   --i-data demux-joined.qza \
   --o-visualization demux-joined.qzv 
 ```   
-## Visualize the qzv file on qiime tools view: https://view.qiime2.org/
+### (Ignore if the pairing was done in Qiime2) Visualize the qzv file on qiime tools view: https://view.qiime2.org/
+
+
+
 
 ## Quality filtering
 ```{r}
