@@ -105,7 +105,23 @@ qiime feature-table merge-seq-data \
 
 # Deblur - Sequences need to be paired first
 
-## In Qiime2
+## Import demultiplexed fastq (sequences not joined)
+### Files should be under this format (Casava): sampleID_S50_L001_R1_001.fastq.gz
+```{r}
+qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path Raw-data \
+  --source-format CasavaOneEightSingleLanePerSampleDirFmt \
+  --output-path demux.qza
+```
+```{r}
+qiime demux summarize \
+  --i-data demux.qza \
+  --o-visualization demux.qzv
+```
+## Visualize the qzv file on qiime tools view: https://view.qiime2.org/
+
+## Join reads
 ```{r}
 qiime vsearch join-pairs \
   --i-demultiplexed-seqs demux.qza \
@@ -153,8 +169,8 @@ qiime quality-filter q-score \
 ``` 
 ```{r}
 qiime quality-filter visualize-stats \
-  --i-filter-stats Run4A-joined-filtered-stats.qza \
-  --o-visualization Run4A-joined-filtered-stats.qzv
+  --i-filter-stats demux-joined-filtered-stats.qza \
+  --o-visualization demux-joined-filtered-stats.qzv
 ``` 
 ## Visualize the qzv file on qiime tools view: https://view.qiime2.org/
 
