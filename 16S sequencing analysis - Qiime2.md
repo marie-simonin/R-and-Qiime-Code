@@ -2,7 +2,7 @@
 # Dada2 and Deblur 
 
 
-## Open Qiime2
+## Open Qiime2 (here for version 2017.10)
 ```{r}
 source activate qiime2-2017.10
 qiime
@@ -105,7 +105,14 @@ qiime feature-table merge-seq-data \
 
 # Deblur - Sequences need to be paired first
 
-## In Qiime1
+## In Qiime2
+```{r}
+qiime vsearch join-pairs \
+  --i-demultiplexed-seqs demux.qza \
+  --o-joined-sequences demux-joined.qza
+```
+
+## or In Qiime1
 ```{r}
 macqiime
 multiple_join_paired_ends.py -i Raw-data -o Sequences_PairedEndJoined
@@ -116,12 +123,12 @@ multiple_join_paired_ends.py -i Raw-data -o Sequences_PairedEndJoined
 gzip M*
 ```
 
-## In Qiime 2: Import & Filter & Deblur
+## In Qiime 2: Import & Filter & Deblur (if the joining was done in Qiime1)
 
 ```{r}
 qiime
 ```
-## Import joined fastq files in Qiime 2
+## Import joined fastq files in Qiime 2 
 ```{r}
 qiime tools import \
   --type 'SampleData[SequencesWithQuality]' \
