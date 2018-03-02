@@ -8,102 +8,7 @@ source activate qiime2-2017.10
 qiime
 ```
 
-## Import demultiplexed fastq (sequences not joined)
-### Files should be under this format (Casava): sampleID_S50_L001_R1_001.fastq.gz
-```{r}
-qiime tools import \
-  --type 'SampleData[PairedEndSequencesWithQuality]' \
-  --input-path Raw-data \
-  --source-format CasavaOneEightSingleLanePerSampleDirFmt \
-  --output-path demux.qza
-```
-```{r}
-qiime demux summarize \
-  --i-data demux.qza \
-  --o-visualization demux.qzv
-```
-## Visualize the qzv file on qiime tools view: https://view.qiime2.org/
-
-# Dada2 
-## If running on a server, start session in a screen (tmux) 
-```{r}
-tmux new -s dada
-tmux att -t dada
-```
-
-## Run dada2
-```{r}
-qiime dada2 denoise-paired \
-  --i-demultiplexed-seqs demux.qza \
-  --p-trunc-len-f 0 \
-  --p-trunc-len-r 0 \
-  --p-trim-left-r 32 \
-  --o-representative-sequences demux-rep-seq-dada2.qza \
-  --o-table demux-table-dada2.qza \
-  --p-n-threads 0 \
-  --verbose
-```
-
-## Summary
-```{r}
-qiime feature-table summarize \
-  --i-table demux-table-dada2.qza \
-  --o-visualization demux-table-dada2.qzv \
-  --m-sample-metadata-file metadata.tsv
-```
-```{r}
-qiime feature-table tabulate-seqs \
-  --i-data demux-rep-seq-dada2.qza \
-  --o-visualization demux-rep-seq-dada2.qzv
-```
-
-## Rarefy
-```{r}
-qiime feature-table rarefy
-  --i-table demux-table-dada2.qza \
-  --p-sampling-depth 10000 \
-  --o-rarefied-table demux-table-dada2-rarefied-10000.qza
-```
-
-## Export SV table (biom table) and representative sequences (txt file)
-```{r}
-qiime tools export \
-  demux-table-dada2.qza \
-  --output-dir Dada2-output
-```
-```{r}
-qiime tools export \
-  demux-rep-seq-dada2.qza \
-  --output-dir Dada2-output
-```
-```{r}
-qiime tools export \
-  demux-table-dada2-rarefied-10000.qza \
-  --output-dir Dada2-output
-```
-## convert biom file in txt file in Qiime 1
-```{r}
-macqiime
-biom convert -i feature-table.biom -o Dada2-SV-table.txt --to-tsv --table-type="OTU table"
-```
-
-## To regroup different processed datasets - Merging denoised datasets
-```{r}
-qiime feature-table merge \
-  --i-table1 demux-table-dada2.qza \
-  --i-table2 demux2-table-dada2.qza \
-  --o-merged-table merged_table_dada2.qza
-```
-```{r}
-qiime feature-table merge-seq-data \
-  --i-data1 demux-rep-seq-dada2.qza \
-  --i-data2 demux2-rep-seq-dada2.qza \
-  --o-merged-data merged_rep-seq-dada2.qza
-```
-
----
-
-# Deblur - Sequences need to be paired first
+# Deblur 
 
 ## Import demultiplexed fastq (sequences not joined)
 ### Files should be under this format (Casava): sampleID_S50_L001_R1_001.fastq.gz
@@ -121,7 +26,7 @@ qiime demux summarize \
 ```
 ## Visualize the qzv file on qiime tools view: https://view.qiime2.org/
 
-## Join reads
+## Join reads: - Sequences need to be paired first
 ```{r}
 qiime vsearch join-pairs \
   --i-demultiplexed-seqs demux.qza \
@@ -263,6 +168,108 @@ qiime tools export \
 macqiime
 biom convert -i feature-table.biom -o Merged-Deblur-SV-table.txt --to-tsv --table-type="OTU table"
 ```
+
+
+
+---
+
+# DADA2
+
+
+## Import demultiplexed fastq (sequences not joined)
+### Files should be under this format (Casava): sampleID_S50_L001_R1_001.fastq.gz
+```{r}
+qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path Raw-data \
+  --source-format CasavaOneEightSingleLanePerSampleDirFmt \
+  --output-path demux.qza
+```
+```{r}
+qiime demux summarize \
+  --i-data demux.qza \
+  --o-visualization demux.qzv
+```
+## Visualize the qzv file on qiime tools view: https://view.qiime2.org/
+
+# Dada2 
+## If running on a server, start session in a screen (tmux) 
+```{r}
+tmux new -s dada
+tmux att -t dada
+```
+
+## Run dada2
+```{r}
+qiime dada2 denoise-paired \
+  --i-demultiplexed-seqs demux.qza \
+  --p-trunc-len-f 0 \
+  --p-trunc-len-r 0 \
+  --p-trim-left-r 32 \
+  --o-representative-sequences demux-rep-seq-dada2.qza \
+  --o-table demux-table-dada2.qza \
+  --p-n-threads 0 \
+  --verbose
+```
+
+## Summary
+```{r}
+qiime feature-table summarize \
+  --i-table demux-table-dada2.qza \
+  --o-visualization demux-table-dada2.qzv \
+  --m-sample-metadata-file metadata.tsv
+```
+```{r}
+qiime feature-table tabulate-seqs \
+  --i-data demux-rep-seq-dada2.qza \
+  --o-visualization demux-rep-seq-dada2.qzv
+```
+
+## Rarefy
+```{r}
+qiime feature-table rarefy
+  --i-table demux-table-dada2.qza \
+  --p-sampling-depth 10000 \
+  --o-rarefied-table demux-table-dada2-rarefied-10000.qza
+```
+
+## Export SV table (biom table) and representative sequences (txt file)
+```{r}
+qiime tools export \
+  demux-table-dada2.qza \
+  --output-dir Dada2-output
+```
+```{r}
+qiime tools export \
+  demux-rep-seq-dada2.qza \
+  --output-dir Dada2-output
+```
+```{r}
+qiime tools export \
+  demux-table-dada2-rarefied-10000.qza \
+  --output-dir Dada2-output
+```
+## convert biom file in txt file in Qiime 1
+```{r}
+macqiime
+biom convert -i feature-table.biom -o Dada2-SV-table.txt --to-tsv --table-type="OTU table"
+```
+
+## To regroup different processed datasets - Merging denoised datasets
+```{r}
+qiime feature-table merge \
+  --i-table1 demux-table-dada2.qza \
+  --i-table2 demux2-table-dada2.qza \
+  --o-merged-table merged_table_dada2.qza
+```
+```{r}
+qiime feature-table merge-seq-data \
+  --i-data1 demux-rep-seq-dada2.qza \
+  --i-data2 demux2-rep-seq-dada2.qza \
+  --o-merged-data merged_rep-seq-dada2.qza
+```
+
+
 
 # Misc in Qiime 1
 ## Subsample a Biom table in Qiime1 based on a list of sample ID
